@@ -1,7 +1,7 @@
 ---
 steps:
   - label: pre-gate
-    command: echo "before concurrency gate"
+    command: echo "before concurrency gate"; sleep 5
     key: pre-gate
 
   - label: start-gate
@@ -18,7 +18,8 @@ steps:
     key: deploy
     depends_on: start-gate
 
-  - command: echo "test (inside concurrency gate)"
+  - label: test
+    command: echo "test (inside concurrency gate)"
     parallelism: 3
     depends_on: deploy
     key: test
