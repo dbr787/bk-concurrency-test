@@ -8,11 +8,11 @@ env:
   POST_GATE_SLEEP: "5"
 
 steps:
-  - label: pre-gate
-    command: "echo \"before concurrency gate\"; sleep ${PRE_GATE_SLEEP}"
+  - label: ":orangutan: pre-gate"
+    command: "echo \"before concurrency gate\"; sleep ${PRE_GATE_SLEEP}:-10}"
     key: pre-gate
 
-  - label: start-gate
+  - label: ":llama: start-gate"
     command: "echo \"start of concurrency gate\"; sleep ${START_GATE_SLEEP:-10}"
     concurrency_group: gate
     concurrency: 1
@@ -21,12 +21,12 @@ steps:
 
   - wait
 
-  - label: deploy
+  - label: ":llama: deploy"
     command: "echo \"deploy (inside concurrency gate)\"; sleep ${DEPLOY_GATE_SLEEP:-10}"
     key: deploy
     depends_on: start-gate
 
-  - label: test
+  - label: ":llama: test"
     command: "echo \"test (inside concurrency gate)\"; sleep ${TEST_GATE_SLEEP:-10}"
     parallelism: 3
     depends_on: deploy
@@ -34,12 +34,12 @@ steps:
 
   - wait
 
-  - label: end-gate
+  - label: ":llama: end-gate"
     command: "echo \"end of concurrency gate\"; sleep ${END_GATE_SLEEP:-10}"
     concurrency_group: gate
     concurrency: 1
     key: end-gate
 
-  - label: post-gate
+  - label: ":orangutan: post-gate"
     command: "echo \"after concurrency gate\"; sleep ${POST_GATE_SLEEP:-10}"
     depends_on: end-gate
