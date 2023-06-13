@@ -1,6 +1,11 @@
 ---
 env:
-  SLEEP: 1
+  PRE_GATE_SLEEP: 1
+  START_GATE_SLEEP: 1
+  DEPLOY_GATE_SLEEP: 1
+  TEST_GATE_SLEEP: 1
+  END_GATE_SLEEP: 1
+  POST_GATE_SLEEP: 1
 
 steps:
   - label: pre-gate
