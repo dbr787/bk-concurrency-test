@@ -1,11 +1,14 @@
 ---
+env:
+  SLEEP: 1
+
 steps:
   - label: pre-gate
     command: echo "before concurrency gate"; sleep 5
     key: pre-gate
 
   - label: start-gate
-    command: echo "start of concurrency gate"
+    command: echo "start of concurrency gate"; sleep $$SLEEP
     concurrency_group: gate
     concurrency: 1
     key: start-gate
