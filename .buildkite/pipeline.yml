@@ -9,11 +9,11 @@ env:
 
 steps:
   - label: pre-gate
-    command: echo "before concurrency gate"; sleep 5
+    command: echo "before concurrency gate"; sleep $$PRE_GATE_SLEEP
     key: pre-gate
 
   - label: start-gate
-    command: echo "start of concurrency gate"; sleep $$SLEEP
+    command: echo "start of concurrency gate"; sleep $$START_GATE_SLEEP
     concurrency_group: gate
     concurrency: 1
     key: start-gate
@@ -22,23 +22,23 @@ steps:
   - wait
 
   - label: deploy
-    command: echo "deploy (inside concurrency gate)"
+    command: echo "deploy (inside concurrency gate)"; sleep $$DEPLOY_GATE_SLEEP
     key: deploy
     depends_on: start-gate
 
   - label: test
-    command: echo "test (inside concurrency gate)"
+    command: echo "test (inside concurrency gate)"; sleep $$TEST_GATE_SLEEP
     parallelism: 3
     depends_on: deploy
     key: test
 
   - wait
 
-  - command: echo "end of concurrency gate"
+  - command: echo "end of concurrency gate"; sleep $$END_GATE_SLEEP
     concurrency_group: gate
     concurrency: 1
     key: end-gate
 
   - label: post-gate
-    command: echo "after concurrency gate"
+    command: echo "after concurrency gate"; sleep $$POST_GATE_SLEEP
     depends_on: end-gate
