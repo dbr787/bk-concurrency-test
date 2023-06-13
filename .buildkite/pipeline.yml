@@ -1,32 +1,35 @@
 ---
 steps:
-  - command: echo "Pre-gate step"
-    label: pre-gate
-    key: unit-tests
+  - label: pre-gate
+    command: echo "before concurrency gate"
+    key: pre-gate
 
-  - command: echo "--> Start of concurrency gate"
+  - label: start-gate
+    command: echo "start of concurrency gate"
     concurrency_group: gate
     concurrency: 1
     key: start-gate
-    depends_on: unit-tests
+    depends_on: pre-gate
 
   - wait
 
-  - command: echo "Running deployment to staging environment"
-    key: stage-deploy
+  - label: deploy
+    command: echo "deploy (inside concurrency gate)"
+    key: deploy
     depends_on: start-gate
 
-  - command: echo "Running e2e tests after the deployment"
+  - command: echo "test (inside concurrency gate)"
     parallelism: 3
-    depends_on: [stage-deploy]
-    key: e2e
+    depends_on: deploy
+    key: test
 
   - wait
 
-  - command: echo "End of concurrency gate <--"
+  - command: echo "end of concurrency gate"
     concurrency_group: gate
     concurrency: 1
     key: end-gate
 
-  - command: echo "This and subsequent steps run independently"
+  - label: post-gate
+    command: echo "after concurrency gate"
     depends_on: end-gate
