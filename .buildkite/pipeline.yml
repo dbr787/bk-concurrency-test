@@ -9,7 +9,7 @@ env:
 
 steps:
   - label: ":orangutan: pre-gate"
-    command: "echo \"before concurrency gate\"; sleep ${PRE_GATE_SLEEP}:-10}"
+    command: "echo \"before concurrency gate\"; sleep ${PRE_GATE_SLEEP:-10}"
     key: pre-gate
 
   - label: ":llama: start-gate"
