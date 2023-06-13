@@ -1,15 +1,15 @@
 ---
 env:
-  PRE_GATE_SLEEP: 5
-  START_GATE_SLEEP: 5
-  DEPLOY_GATE_SLEEP: 5
+  PRE_GATE_SLEEP: "5"
+  START_GATE_SLEEP: "5"
+  DEPLOY_GATE_SLEEP: "5"
   TEST_GATE_SLEEP: "5"
   END_GATE_SLEEP: "5"
   POST_GATE_SLEEP: "5"
 
 steps:
   - label: ":orangutan: pre-gate"
-    command: "echo \"before concurrency gate\"; sleep $${PRE_GATE_SLEEP}:-10}"
+    command: "echo \"before concurrency gate\"; sleep ${PRE_GATE_SLEEP}:-10}"
     key: pre-gate
 
   - label: ":llama: start-gate"
