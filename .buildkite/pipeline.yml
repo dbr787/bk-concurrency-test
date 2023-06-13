@@ -1,7 +1,7 @@
 ---
 env:
   PRE_GATE_SLEEP: 1
-  START_GATE_SLEEP: 1
+  # START_GATE_SLEEP: 1
   DEPLOY_GATE_SLEEP: 1
   TEST_GATE_SLEEP: 1
   END_GATE_SLEEP: 1
@@ -9,11 +9,11 @@ env:
 
 steps:
   - label: pre-gate
-    command: "echo \"before concurrency gate\"; sleep ${PRE_GATE_SLEEP:-1}"
+    command: "echo \"before concurrency gate\"; sleep ${PRE_GATE_SLEEP:-10}"
     key: pre-gate
 
   - label: start-gate
-    command: echo "start of concurrency gate"; sleep $$START_GATE_SLEEP
+    command: "echo \"start of concurrency gate\"; sleep ${START_GATE_SLEEP:-30}"
     concurrency_group: gate
     concurrency: 1
     key: start-gate
