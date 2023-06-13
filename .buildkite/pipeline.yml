@@ -1,6 +1,7 @@
 ---
 steps:
-  - command: echo "Running unit tests"
+  - command: echo "Pre-gate step"
+    label: pre-gate
     key: unit-tests
 
   - command: echo "--> Start of concurrency gate"
