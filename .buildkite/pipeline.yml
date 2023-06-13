@@ -15,14 +15,14 @@ steps:
 
   - label: ":unicorn_face: deploy"
     command: "echo \"deploy (inside concurrency gate)\"; sleep ${DEPLOY_GATE_SLEEP:-5}"
-    key: deploy
+    key: deploy-gate
     depends_on: start-gate
 
   - label: ":unicorn_face: test"
     command: "echo \"test (inside concurrency gate)\"; sleep ${TEST_GATE_SLEEP:-5}"
     parallelism: 3
-    depends_on: deploy
-    key: test
+    depends_on: deploy-gate
+    key: test-gate
 
   - wait
 
@@ -35,3 +35,27 @@ steps:
   - label: ":llama: post-gate"
     command: "echo \"after concurrency gate\"; sleep ${POST_GATE_SLEEP:-5}"
     depends_on: end-gate
+
+  - wait
+
+  - label: ":butterfly: pre-group"
+    command: "echo \"before concurrency group\"; sleep ${PRE_GROUP_SLEEP:-5}"
+    key: pre-group
+
+  - label: ":butterfly: start-group"
+    command: "echo \"start of concurrency group\"; sleep ${START_GROUP_SLEEP:-5}"
+    concurrency_group: group
+    concurrency: 1
+    key: start-group
+    depends_on: pre-group
+
+  - label: ":unicorn_face: deploy"
+    command: "echo \"deploy (inside concurrency gate)\"; sleep ${DEPLOY_GATE_SLEEP:-5}"
+    key: deploy
+    depends_on: start-group
+
+  - label: ":butterfly: deploy"
+    command: "echo \"test (inside concurrency group)\"; sleep ${TEST_GATE_SLEEP:-5}"
+    parallelism: 3
+    depends_on: pre-group
+    key: test
