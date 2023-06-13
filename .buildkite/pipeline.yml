@@ -9,7 +9,7 @@ env:
 
 steps:
   - label: pre-gate
-    command: echo "before concurrency gate"; sleep $$PRE_GATE_SLEEP
+    command: "echo \"before concurrency gate\"; sleep ${PRE_GATE_SLEEP:-1}"
     key: pre-gate
 
   - label: start-gate
