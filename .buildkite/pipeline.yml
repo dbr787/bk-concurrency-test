@@ -49,13 +49,17 @@ steps:
     key: start-group
     depends_on: pre-group
 
-  - label: ":unicorn_face: deploy"
-    command: "echo \"deploy (inside concurrency gate)\"; sleep ${DEPLOY_GATE_SLEEP:-5}"
-    key: deploy
+  - label: ":butterfly: deploy"
+    command: "echo \"deploy (inside concurrency group)\"; sleep ${DEPLOY_GROUP_SLEEP:-5}"
+    concurrency_group: group
+    concurrency: 1
+    key: deploy-group
     depends_on: start-group
 
-  - label: ":butterfly: deploy"
-    command: "echo \"test (inside concurrency group)\"; sleep ${TEST_GATE_SLEEP:-5}"
+  - label: ":butterfly: test"
+    command: "echo \"test (inside concurrency group)\"; sleep ${TEST_GROUP_SLEEP:-5}"
     parallelism: 3
-    depends_on: pre-group
-    key: test
+    concurrency_group: group
+    concurrency: 1
+    depends_on: deploy-group
+    key: test-group
